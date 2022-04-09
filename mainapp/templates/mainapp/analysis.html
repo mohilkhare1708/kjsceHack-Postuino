@@ -2,8 +2,7 @@
 <style>
   .card_analysis {
     background: linear-gradient(to top, #191d23, #252a34);
-    width: 90%;
-    max-width: 400px;
+    width: 30%;
     padding: 30px;
     border-radius: 30px;
     flex-direction: column;
@@ -52,30 +51,33 @@
   <div
     class="container-fluid container-xl d-flex align-items-center justify-content-between mt-4"
   >
-    <body>
-      <div class="row">
-        <div class="card">
-          <div class="card-body">
-            <div class="wrapper mt-4"><canvas id="canvas"></canvas></div>
-          </div>
+    <div class="row">
+      <div class="card">
+        <div class="card-body">
+          <div class="wrapper mt-4"><canvas id="canvas"></canvas></div>
         </div>
       </div>
-      <div class="row">
-        {% for session in sessions %}
-        <div class="card_analysis m-3" id="intro">
-          <h3>Session on {{ session.date }}</h3>
-          <p>{{ session.startTime }}</p>
-          <button class="button" onclick="submit()">Analyse</button>
-        </div>
+    </div>
+  </div>
+  <div
+    class="container-fluid container-xl align-items-center justify-content-between mt-4"
+  >
+    <div class="row">
+      {% for session in sessions %}
+      <div class="col-sm-4 card_analysis m-3" id="intro">
+        <h3>Session on {{ session.date }}</h3>
+        <p>{{ session.startTime }}</p>
+        <button class="button" onclick="submit()">Analyse</button>
       </div>
       {% endfor %}
-
-      <script src="script.js"></script>
-    </body>
+    </div>
   </div>
 </div>
 
+<script src="script.js"></script>
+
 <script>
+  Chart.defaults.font.size = 160;
   const colors = {
     purple: {
       default: "rgba(149, 76, 233, 1)",
@@ -89,20 +91,8 @@
     },
   };
 
-  const weight = [60.0, 60.2, 59.1, 61.4, 59.9, 60.2, 59.8, 58.6, 59.6, 59.2];
-
-  const labels = [
-    "Week 1",
-    "Week 2",
-    "Week 3",
-    "Week 4",
-    "Week 5",
-    "Week 6",
-    "Week 7",
-    "Week 8",
-    "Week 9",
-    "Week 10",
-  ];
+  const weight = {{ y|safe }};
+  const labels = {{ x|safe }};
 
   const ctx = document.getElementById("canvas").getContext("2d");
   ctx.canvas.height = 400;
@@ -119,6 +109,8 @@
       labels: labels,
       datasets: [
         {
+          label: "No. of Slouches",
+          fontSize: 18,
           fill: true,
           backgroundColor: gradient,
           pointBackgroundColor: colors.purple.default,
@@ -135,8 +127,13 @@
         padding: 10,
       },
       responsive: true,
-      legend: {
-        display: false,
+      plugins: {
+        legend: {
+          display: false,
+          labels: {
+            family: "Calibri",
+          },
+        },
       },
 
       scales: {
@@ -146,19 +143,21 @@
               display: false,
             },
             ticks: {
-              padding: 10,
+              padding: 15,
               autoSkip: false,
               maxRotation: 15,
               minRotation: 15,
+              fontSize: 18,
+              fontFamily: "Raleway",
             },
           },
         ],
         yAxes: [
           {
             scaleLabel: {
-              display: true,
+              display: false,
               labelString: "Number of Slouches",
-              padding: 10,
+              padding: 15,
             },
             gridLines: {
               display: true,
@@ -166,9 +165,11 @@
             },
             ticks: {
               beginAtZero: false,
-              max: 63,
-              min: 57,
+              max: {{ maxY }},
+              min: 0,
               padding: 10,
+              fontFamily: "Verdana",
+              fontSize: 18,
             },
           },
         ],

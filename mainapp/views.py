@@ -87,13 +87,31 @@ def analysis(request):
 
     filtered_sessions = sessions.find({'user': request.user.id})
     fsessions = []
+    x, y, maxY = [], [], -1
     for session in filtered_sessions:
         ans = returnDayMonth(session['session_date'])
+        x.append(session['session_date'])
+        y.append(session['session_slouches'])
+        maxY = max(maxY, int(session['session_slouches']))
+        # slouch_tl = eval(session['session_slouch_timeline'])
+        # x, y = [], []
+        # for i in slouch_tl:
+        #     x.append(i[0])
+        #     y.append(i[i])
         fsessions.append({
             'startTime': session['session_startTime'],
-            'date': date(day=ans[2], month=ans[1], year=ans[0]).strftime('%d %B %Y')
+            'date': date(day=ans[2], month=ans[1], year=ans[0]).strftime('%d %B %Y'),
+            'x': x,
+            'y': y
         })
-    return render(request, 'mainapp/analysis.html', {'title': 'Analysis', 'name': request.user.profile.full_name, 'sessions': fsessions})
+    context = {'title': 'Analysis',
+               'name': request.user.profile.full_name,
+               'sessions': fsessions,
+               'x': x,
+               'y': y,
+               'maxY': maxY
+               }
+    return render(request, 'mainapp/analysis.html', context)
 
 
 def all_sessions(request):
