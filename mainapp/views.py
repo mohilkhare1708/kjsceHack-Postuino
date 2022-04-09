@@ -15,9 +15,10 @@ env = environ.Env()
 environ.Env.read_env()
 
 client = MongoClient(env('MONGO_CREDENTIAL'))
-db = client['postuino-db']
+db = client['postuino-db-kjsceHack']
 
 sessions = db['sessions']
+
 
 def home_page(request):
     return render(request, 'mainapp/home.html', {'title': 'Home'})
@@ -54,11 +55,11 @@ def choose(request):
 def session(request):
     if request.method == 'POST':
         session_details = {
-            'user' : request.user.id,
-            'session_slouches' : request.POST['slouches'],
-            'session_startTime' : request.POST['startTime'],
-            'session_endTime' : request.POST['endTime'], 
-            'session_date' : request.POST['date']
+            'user': request.user.id,
+            'session_slouches': request.POST['slouches'],
+            'session_startTime': request.POST['startTime'],
+            'session_endTime': request.POST['endTime'],
+            'session_date': request.POST['date']
         }
         sessions.insert_one(session_details)
         print(request.POST['slouches'])
@@ -84,22 +85,25 @@ def analysis(request):
         ans.append(int(day))
         return ans
 
-    filtered_sessions = sessions.find({'user' : request.user.id})
+    filtered_sessions = sessions.find({'user': request.user.id})
     fsessions = []
     for session in filtered_sessions:
         ans = returnDayMonth(session['session_date'])
         fsessions.append({
-            'startTime' : session['session_startTime'],
-            'date' : date(day=ans[2], month=ans[1], year=ans[0]).strftime('%d %B %Y')
+            'startTime': session['session_startTime'],
+            'date': date(day=ans[2], month=ans[1], year=ans[0]).strftime('%d %B %Y')
         })
-    return render(request, 'mainapp/analysis.html', {'title': 'Analysis', 'name': 'Mohil', 'sessions' : fsessions})
+    return render(request, 'mainapp/analysis.html', {'title': 'Analysis', 'name': 'Mohil', 'sessions': fsessions})
+
 
 def all_sessions(request):
     # obj=Session.objects.all()
     return render(request, 'mainapp/all_sessions.html')
 
+
 def graph(request):
-    return render(request,'mainapp/graph.html')
+    return render(request, 'mainapp/graph.html')
+
 
 def graph2(request):
-    return render(request,'mainapp/graph2.html')
+    return render(request, 'mainapp/graph2.html')
