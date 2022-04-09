@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 import environ
 from pymongo import MongoClient
 from datetime import date
+from bson.objectid import ObjectId
 
 env = environ.Env()
 # reading .env file
@@ -62,7 +63,8 @@ def session(request):
             'session_date': request.POST['date'],
             'session_slouch_timeline': request.POST['slouchKeeper']
         }
-        sessions.insert_one(session_details)
+        objId = sessions.insert_one(session_details).inserted_id
+        return redirect('session-analysis', objId)
     name = request.user
     context = {
         'title': 'Session',
@@ -71,20 +73,21 @@ def session(request):
     return render(request, 'mainapp/session.html', context)
 
 
+def returnDayMonth(date):
+    ans = []
+    day = ''
+    for i in range(len(date)):
+        if date[i] == '-':
+            ans.append(int(day))
+            day = ''
+        else:
+            day += date[i]
+    ans.append(int(day))
+    return ans
+
+
 @login_required
 def analysis(request):
-    def returnDayMonth(date):
-        ans = []
-        day = ''
-        for i in range(len(date)):
-            if date[i] == '-':
-                ans.append(int(day))
-                day = ''
-            else:
-                day += date[i]
-        ans.append(int(day))
-        return ans
-
     filtered_sessions = sessions.find({'user': request.user.id})
     fsessions = []
     x, y, maxY = [], [], -1
@@ -93,16 +96,12 @@ def analysis(request):
         x.append(session['session_date'])
         y.append(session['session_slouches'])
         maxY = max(maxY, int(session['session_slouches']))
-        # slouch_tl = eval(session['session_slouch_timeline'])
-        # x, y = [], []
-        # for i in slouch_tl:
-        #     x.append(i[0])
-        #     y.append(i[i])
         fsessions.append({
             'startTime': session['session_startTime'],
             'date': date(day=ans[2], month=ans[1], year=ans[0]).strftime('%d %B %Y'),
             'x': x,
-            'y': y
+            'y': y,
+            'pk': session['_id']
         })
     context = {'title': 'Analysis',
                'name': request.user.profile.full_name,
@@ -114,14 +113,30 @@ def analysis(request):
     return render(request, 'mainapp/analysis.html', context)
 
 
-def all_sessions(request):
-    # obj=Session.objects.all()
-    return render(request, 'mainapp/all_sessions.html')
+@login_required
+def session_analysis(request, pk):
+    info = sessions.find_one({'_id': ObjectId(pk)})
+    print(info, pk)
+    slouch_tl = eval(info['session_slouch_timeline'])
+    print(slouch_tl)
+    x, y, maxY = [], [], -1
+    ans = returnDayMonth(info['session_date'])
+    for i in slouch_tl:
+        x.append(i[0])
+        y.append(i[1])
+        maxY = max(maxY, int(info['session_slouches']))
+    context = {
+        'x': x,
+        'y': y,
+        'date': date(day=ans[2], month=ans[1], year=ans[0]).strftime('%d %B %Y'),
+        'no_slouches': info['session_slouches']
+    }
+    return render(request, 'mainapp/graph2.html', context)
 
 
-def graph(request):
-    return render(request, 'mainapp/graph.html')
+# def graph(request):
+#     return render(request, 'mainapp/graph.html')
 
 
-def graph2(request):
-    return render(request, 'mainapp/graph2.html')
+# def graph2(request):
+#     return render(request, 'mainapp/graph2.html')

@@ -67,7 +67,12 @@
       <div class="col-sm-4 card_analysis m-3" id="intro">
         <h3>Session on {{ session.date }}</h3>
         <p>{{ session.startTime }}</p>
-        <button class="button" onclick="submit()">Analyse</button>
+        <button
+          class="button"
+          onclick="location.href='{% url 'session-analysis' session.pk %}';"
+        >
+          Analyse
+        </button>
       </div>
       {% endfor %}
     </div>
