@@ -59,10 +59,10 @@ def session(request):
             'session_slouches': request.POST['slouches'],
             'session_startTime': request.POST['startTime'],
             'session_endTime': request.POST['endTime'],
-            'session_date': request.POST['date']
+            'session_date': request.POST['date'],
+            'session_slouch_timeline': request.POST['slouchKeeper']
         }
         sessions.insert_one(session_details)
-        print(request.POST['slouches'])
     name = request.user
     context = {
         'title': 'Session',
@@ -93,7 +93,7 @@ def analysis(request):
             'startTime': session['session_startTime'],
             'date': date(day=ans[2], month=ans[1], year=ans[0]).strftime('%d %B %Y')
         })
-    return render(request, 'mainapp/analysis.html', {'title': 'Analysis', 'name': 'Mohil', 'sessions': fsessions})
+    return render(request, 'mainapp/analysis.html', {'title': 'Analysis', 'name': request.user.profile.full_name, 'sessions': fsessions})
 
 
 def all_sessions(request):
