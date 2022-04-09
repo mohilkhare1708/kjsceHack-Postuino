@@ -1,143 +1,15 @@
-{% extends 'mainapp/base.html' %} {% load static %} {% block content %}
-<div class="page-header">
-  <img src="{% static 'img/blob.png' %}" class="path" />
-  <img src="{% static 'img/path2.png' %}" class="path2" />
-  <img src="{% static 'img/triunghiuri.png' %}" class="shapes triangle" />
-  <img src="{% static 'img/waves.png' %}" class="shapes wave" />
-  <img src="{% static 'img/patrat.png' %}" class="shapes squares" />
-  <img src="{% static 'img/cercuri.png' %}" class="shapes circle" />
-  <div class="content-center">
-    <div
-      class="row row-grid justify-content-between align-items-center text-left"
-    >
-      <div class="col-lg-6 col-md-6">
-        <h1 class="text-white">
-          We care about your
-          <br />
-          <span class="text-white">posture</span>
-        </h1>
-        <p class="text-white mb-3">
-          A wonderful serenity has taken possession of my entire soul, like
-          these sweet mornings of spring which I enjoy with my whole heart. I am
-          alone, and feel...
-        </p>
-        <div class="btn-wrapper mb-3">
-          <p class="category text-success d-inline">From 9.99%/mo</p>
-          <a href="#blk" class="btn btn-success btn-link btn-sm"
-            ><i class="tim-icons icon-minimal-right"></i
-          ></a>
-        </div>
-        <div class="btn-wrapper">
-          <div class="button-container">
-            <button
-              href="javascript:void(0)"
-              class="btn btn-icon btn-simple btn-round btn-neutral"
-            >
-              <i class="fab fa-twitter"></i>
-            </button>
-            <button
-              href="javascript:void(0)"
-              class="btn btn-icon btn-simple btn-round btn-neutral"
-            >
-              <i class="fab fa-dribbble"></i>
-            </button>
-            <button
-              href="javascript:void(0)"
-              class="btn btn-icon btn-simple btn-round btn-neutral"
-            >
-              <i class="fab fa-facebook"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-5">
-        <img
-          src="{% static 'img/etherum.png' %}"
-          alt="Circle image"
-          class="img-fluid"
-        />
-      </div>
-    </div>
-  </div>
-</div>
-<section class="section section-lg">
-  <!-- <img src="{% static 'img/path4.png' %}" class="path" />
-     <img src="{% static 'img/path5.png' %}" class="path2" />
-     <img src="{% static 'img/path2.png' %}" class="path3" /> -->
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-12">
-        <h1 class="text-center">Your best benefit</h1>
-        <div class="row row-grid justify-content-center">
-          <div class="col-lg-3">
-            <div class="info">
-              <div class="icon icon-primary">
-                <i class="tim-icons icon-money-coins"></i>
-              </div>
-              <h4 class="info-title">Low Commission</h4>
-              <hr class="line-primary" />
-              <p>
-                Divide details about your work into parts. Write a few lines
-                about each one. A paragraph describing a feature will.
-              </p>
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <div class="info">
-              <div class="icon icon-warning">
-                <i class="tim-icons icon-chart-pie-36"></i>
-              </div>
-              <h4 class="info-title">High Incomes</h4>
-              <hr class="line-warning" />
-              <p>
-                Divide details about your product or agency work into parts.
-                Write a few lines about each one. A paragraph describing feature
-                will be a feature.
-              </p>
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <div class="info">
-              <div class="icon icon-success">
-                <i class="tim-icons icon-single-02"></i>
-              </div>
-              <h4 class="info-title">Verified People</h4>
-              <hr class="line-success" />
-              <p>
-                Divide details about your product or agency work into parts.
-                Write a few lines about each one. A paragraph describing be
-                enough.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<section class="section section-lg">
-  <!-- <img src="{% static 'img/path4.png" class="path" />
-     <img src="{% static 'img/path2.png" class="path2" /> -->
-  <div class="col-md-12">
-    <div class="card card-chart card-plain">
-      <h1 class="text-center">Your best benefit</h1>
-      {% comment %}
-      <div class="card-header">
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container" style="margin-top: 10em;">
         <div class="row">
-          <div class="col-sm-6 text-left">
-            <hr class="line-primary" />
-            <h5 class="card-category">Total Investments</h5>
-            <h2 class="card-title">Performance</h2>
-          </div>
+            <div class="col-lg-6 d-flex flex-column justify-content-center">
+                <h1 data-aos="fade-up">Slouch no more!</h1>
+                <h2 data-aos="fade-up" data-aos-delay="400">We provide complete assessment solution, even for descriptive answers!</h2>
+            </div>
+            <div class="col-lg-6 hero-img" data-aos="zoom-out" data-aos-delay="200">
+                <img src="{% static 'img/hero-img.png' %}" class="img-fluid" alt="">
+            </div>
         </div>
-      </div>
-      {% endcomment %}
-      <div class="card-body">
-        <div class="chart-area">
-          <canvas id="chartBig"></canvas>
-        </div>
-      </div>
     </div>
-  </div>
-</section>
 {% endblock content %}
